@@ -46,10 +46,10 @@ def get_dataframe(remove_err = True, cols_to_remove = None):
 
         # In case only one column is passed.
         if type(cols_to_remove) == str:
-            df.drop([cols_to_remove], axis = 1)
+            df = df.drop([cols_to_remove], axis = 1)
 
         else:
-            df.drop(cols_to_remove, axis = 1)
+            df = df.drop(cols_to_remove, axis = 1)
 
     return df
 
