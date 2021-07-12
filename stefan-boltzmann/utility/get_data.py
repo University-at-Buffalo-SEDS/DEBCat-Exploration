@@ -1,6 +1,15 @@
+#####################
+# IMPORT STATEMENTS #
+#####################
+
 import pandas as pds
 import numpy as np
 
+#####################
+#     MAIN CODE     #
+#####################
+
+# This gets the dataframe from the site and cleans it up.
 def get_dataframe(remove_err = True, cols_to_remove = None):
 
     '''
@@ -29,7 +38,7 @@ def get_dataframe(remove_err = True, cols_to_remove = None):
 
         # Find the locations where 'err' is in the keys.  NumPy is weird with strings.
         locs = (-np.core.defchararray.find(np.array(keys).astype(str), "err")).astype(bool)
-        
+
         # Index the keys by these locations and then index the dataframe by these keys.
         df = df[keys[locs]]
 
@@ -44,5 +53,25 @@ def get_dataframe(remove_err = True, cols_to_remove = None):
 
     return df
 
-df = get_dataframe()
-print(df.head())
+# This removes any rows where the value is '-9.99' 
+# as defined in the notes on the website.
+def remove_invalid_values(df, columns_to_check):
+
+    '''
+        df -> the dataframe containing the DEBcat data
+        columns_to_check -> a list of strings containing the keys to check for invalid values. 
+    '''
+
+    # In case only a string is passed.
+    if type(columns_to_check) == str:
+
+        # Save only the rows where that column is
+        # not equal to -9.99.
+        df = df[df[columns_to_check] != -9.99]
+
+    else:
+        for key in columns_to_check:
+            
+            df = df[df[key] != -9.99]
+
+    return df
